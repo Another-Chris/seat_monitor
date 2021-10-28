@@ -30,26 +30,18 @@ const StyledIcon = styled(EventSeatIcon)(({ theme, available }) => ({
   fill: available ? theme.palette.primary.dark : theme.palette.grey[300],
 }));
 
-const icons = [
-  { iconNo: 0, available: true },
-  { iconNo: 1, available: true },
-  { iconNo: 2, available: true },
-  { iconNo: 3, available: true },
-  { iconNo: 4, available: true },
-];
-
-function Seats() {
+function Seats({ seats }) {
   //=== functions
   const getAvailableSeatNo = () =>
-    icons.filter((icon) => icon.available === true).length;
+    seats.filter((seat) => seat.available === true).length;
 
   //=== vars
   const availableSeats = getAvailableSeatNo();
 
   //=== components
   const RenderIcons = () =>
-    icons.map((icon) => (
-      <StyledIcon key={icon.iconNo} available={icon.available ? 1 : 0} />
+    seats.map((seat) => (
+      <StyledIcon key={seat.seatNo} available={seat.available ? 1 : 0} />
     ));
 
   const RenderProgress = () =>
