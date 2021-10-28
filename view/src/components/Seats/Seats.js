@@ -1,6 +1,8 @@
 import { LinearProgress, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { memo, useContext } from "react";
+import { AppContext } from "../../App";
 
 //=== styles
 const StyledContainer = styled("div")(({ theme }) => ({
@@ -30,12 +32,13 @@ const StyledIcon = styled(EventSeatIcon)(({ theme, available }) => ({
   fill: available ? theme.palette.primary.dark : theme.palette.grey[300],
 }));
 
-function Seats({ seats }) {
+function Seats() {
   //=== functions
   const getAvailableSeatNo = () =>
     seats.filter((seat) => seat.available === true).length;
 
   //=== vars
+  const { seatsInfo: seats } = useContext(AppContext);
   const availableSeats = getAvailableSeatNo();
 
   //=== components
@@ -69,4 +72,4 @@ function Seats({ seats }) {
   );
 }
 
-export default Seats;
+export default memo(Seats);

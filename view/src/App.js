@@ -1,10 +1,12 @@
 import Navbar from "./components/Navbar/Navbar";
 import Seats from "./components/Seats/Seats";
 import io from "socket.io-client";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const server = process.env.REACT_APP_SERVER_DEV;
 let appSocket;
+
+export const AppContext = createContext([]);
 
 const ConnectIo = () =>
   new Promise((resolve, reject) => {
@@ -37,10 +39,10 @@ function App() {
   }, []);
 
   return (
-    <>
+    <AppContext.Provider value={{ seatsInfo }}>
       <Navbar />
-      <Seats seats={seatsInfo} />
-    </>
+      <Seats />
+    </AppContext.Provider>
   );
 }
 
