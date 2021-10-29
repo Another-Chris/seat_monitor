@@ -1,5 +1,7 @@
 import { styled } from "@mui/material/styles";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { useState } from "react";
+import Tip from "./Tip";
 
 const StyledIcon = styled(EventSeatIcon)(({ theme, available }) => ({
   display: "block",
@@ -26,11 +28,21 @@ const SeatIcons = styled("div")(({ theme }) => ({
 }));
 
 function SeatsIcons({ seats }) {
+  const [clicked, setClicked] = useState(null);
+
+  //=== functions
+  const onClickIcon = (e) => setClicked(e.target);
+  const close = () => setClicked(null);
   return (
     <SeatIcons>
       {seats.map((seat) => (
-        <StyledIcon key={seat.seatNo} available={seat.available ? 1 : 0} />
+        <StyledIcon
+          onClick={onClickIcon}
+          key={seat.seatNo}
+          available={seat.available ? 1 : 0}
+        />
       ))}
+      <Tip anchorEl={clicked} close={close} />
     </SeatIcons>
   );
 }
