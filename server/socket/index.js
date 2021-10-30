@@ -4,8 +4,14 @@ const { getSeatInfo } = require("./../data");
 let socket;
 let io;
 
+
+const IO_EVENTS = {
+  GET_SEATS_INFO: "GET_SEATS_INFO",
+  RECEIVE_SEATS_INFO: "RECEIVE_SEATS_INFO",
+};
+
 const boardcastSeatInfo = (seats) => {
-  io.emit("boardcastSeatInfo", seats);
+  io.emit(IO_EVENTS.RECEIVE_SEATS_INFO, seats);
 };
 
 const initSocket = (server) => {
@@ -18,7 +24,7 @@ const initSocket = (server) => {
   io.on("connection", (s) => {
     socket = s;
     console.log("connected");
-    socket.on("askForInfo", () => socket.emit("tellSeatsInfo", getSeatInfo()));
+    socket.on(IO_EVENTS.GET_SEATS_INFO, () => socket.emit(IO_EVENTS.GET_SEATS_INFO, getSeatInfo()));
   });
 };
 
