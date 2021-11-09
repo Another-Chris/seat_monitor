@@ -33,7 +33,7 @@ io.on("connection", (s) => {
   console.log("connected");
 });
 
-server.listen(8080, (err) => {
+server.listen(process.env.PORT || 8080, (err) => {
   if (err) {
     console.log(err);
   }

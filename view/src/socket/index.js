@@ -1,13 +1,11 @@
 import io from "socket.io-client";
 
-const server = process.env.REACT_APP_SERVER_DEV;
-
+const server = process.env.REACT_APP_SERVER;
 
 export const IO_EVENTS = {
-    GET_SEATS_INFO: "GET_SEATS_INFO",
-    RECEIVE_SEATS_INFO: "RECEIVE_SEATS_INFO",
-  };
-  
+  GET_SEATS_INFO: "GET_SEATS_INFO",
+  RECEIVE_SEATS_INFO: "RECEIVE_SEATS_INFO",
+};
 
 export const connectIo = () =>
   new Promise((resolve, reject) => {
@@ -18,5 +16,3 @@ export const connectIo = () =>
       resolve(socket);
     });
   });
-
-
