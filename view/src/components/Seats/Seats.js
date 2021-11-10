@@ -9,6 +9,7 @@ import Info from "./Info";
 import SeatsIcons from "./SeatsIcons";
 
 export const SeatContext = createContext({});
+const server = process.env.REACT_APP_SERVER_DEV;
 
 //=== styles
 const StyledContainer = styled("div")(({ theme }) => ({
@@ -21,11 +22,20 @@ const StyledContainer = styled("div")(({ theme }) => ({
 function Seats() {
   const { socket } = useContext(SocketContext);
   const [seats, setSeats] = useState([]);
+  console.log(seats);
 
   useEffect(() => {
+    async function getSeats() {
+      const response = await fetch(server + "/seats", {
+        method: "GET",
+      });
+      const data = await response.json();
+      setSeats(data);
+    }
+
+    getSeats();
     socket &&
       socket.on(IO_EVENTS.RECEIVE_SEATS_INFO, (seats) => setSeats(seats));
-    socket && socket.on(IO_EVENTS.GET_SEATS_INFO, (seats) => setSeats(seats));
   }, [socket]);
 
   //=== functions

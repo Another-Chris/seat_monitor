@@ -59,9 +59,9 @@ void oneMinDuration(int seatId, int duration) {
   //   send post to server
   String query = "?seatId=";
   query += seatId;
-  query +=  "&";
-  query += "duration=" ;
-  query += duration;
+//  query +=  "&";
+//  query += "duration=" ;
+//  query += duration;
   Serial.println(query);
 
   String url = serverName;

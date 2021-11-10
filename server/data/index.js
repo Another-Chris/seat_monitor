@@ -1,61 +1,54 @@
 const initSeats = require("./initSeats");
+const Seat = require("./../model/seats");
 
 let seats = initSeats();
-const seatStatus = {
-  AVAILABLE: "available",
-  OCCUPIED: "occupied",
-};
 
-const reInitSeat = () => {
+const reInitSeat = async () => {
   seats = initSeats();
+  await Seat.deleteMany({});
+  await Seat.insertMany(seats);
   return seats;
 };
 
-const toggleSeats = (seatNo) => {
-  seats = seats.map((seat) => {
-    if (seat.seatNo === seatNo) {
-      let newSeat;
-      const startTime = seat.startTime;
-      const dataToBeCollected = {
-        startTime,
-        duration: seat.duration,
-        endTime: new Date(),
-      };
+const toggleSeats = async (seatNo) => {
+  const seat = await Seat.findOne({ seatNo });
+  const startTime = seat.startTime;
+  const dataToBeCollected = {
+    startTime,
+    duration: seat.duration,
+    endTime: new Date(),
+  };
+  const pushDoc =
+    seat.status === "available"
+      ? { available: dataToBeCollected }
+      : { occupied: dataToBeCollected };
 
-      if (seat.status === seatStatus.AVAILABLE) {
-        newSeat = {
-          ...seat,
-          available: [...seat.available, dataToBeCollected],
-          status: seatStatus.OCCUPIED,
-        };
-      } else {
-        newSeat = {
-          ...seat,
-          occupied: [...seat.occupied, dataToBeCollected],
-          status: seatStatus.AVAILABLE,
-        };
-      }
-      return { ...newSeat, duration: 0, startTime: new Date() };
-    } else {
-      return seat;
-    }
-  });
+  await Seat.findOneAndUpdate(
+    { seatNo },
+    {
+      $push: pushDoc,
+      $set: {
+        duration: 0,
+        status: seat.status === "available" ? "occupied" : "available",
+      },
+    },
+    { new: true }
+  );
 
-  return seats;
-};
-
-const changeDuration = (seatNo, minutes) => {
-  seats = seats.map((seat) => {
-    if (seat.seatNo === seatNo) {
-      return { ...seat, duration: seat.duration + minutes };
-    } else {
-      return seat;
-    }
-  });
+  const seats = await Seat.find({});
 
   return seats;
 };
 
-const getSeatInfo = () => seats;
+const changeDuration = async (seatNo, minutes) => {
+  await Seat.findOneAndUpdate(
+    { seatNo },
+    { $inc: { duration: 1 } },
+    { new: true }
+  );
+  return await Seat.find({});
+};
+
+const getSeatInfo = async () => await Seat.find({});
 
 module.exports = { toggleSeats, getSeatInfo, changeDuration, reInitSeat };

@@ -1,9 +1,7 @@
 const socketio = require("socket.io");
-const { getSeatInfo } = require("./../data");
 
 let socket;
 let io;
-
 
 const IO_EVENTS = {
   GET_SEATS_INFO: "GET_SEATS_INFO",
@@ -21,10 +19,9 @@ const initSocket = (server) => {
     },
   });
 
-  io.on("connection", (s) => {
+  io.on("connection", async (s) => {
     socket = s;
     console.log("connected");
-    socket.on(IO_EVENTS.GET_SEATS_INFO, () => socket.emit(IO_EVENTS.GET_SEATS_INFO, getSeatInfo()));
   });
 };
 

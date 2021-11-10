@@ -6,34 +6,34 @@ const {
 } = require("./../data");
 const { boardcastSeatInfo } = require("./../socket");
 
-const onToggleSeat = (req, res, next) => {
+const onToggleSeat = async (req, res, next) => {
   const seatId = Number(req.query.seatId);
 
-  const seatInfo = toggleSeats(seatId);
+  const seatInfo = await toggleSeats(seatId);
   boardcastSeatInfo(seatInfo);
   res.json(seatInfo);
 };
 
-const onChangeDuration = (req, res, next) => {
-  const { duration, seatId } = req.query;
-  const minutes = Math.ceil(Number(duration) / 60);
-
-  const seatInfo = changeDuration(Number(seatId), minutes);
+const onChangeDuration = async (req, res, next) => {
+  const { seatId } = req.query;
+  const seatInfo = await changeDuration(Number(seatId));
   boardcastSeatInfo(seatInfo);
   res.json(seatInfo);
 };
 
-const onGetSeatInfo = (req, res, next) => {
-  res.json(getSeatInfo());
+const onGetSeatInfo = async (req, res, next) => {
+  const seats = await getSeatInfo();
+  res.json(seats);
 };
 
-const onInitSeats = (req, res, next) => {
+const onInitSeats = async (req, res, next) => {
   const password = Number(req.query.password);
   if (password != 123321) {
     res.json("auth failed");
     return;
   }
-  res.json(reInitSeat());
+  const seats = await reInitSeat();
+  res.json(seats);
 };
 
 module.exports = { onToggleSeat, onChangeDuration, onGetSeatInfo, onInitSeats };
