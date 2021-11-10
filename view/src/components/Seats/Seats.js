@@ -9,7 +9,7 @@ import Info from "./Info";
 import SeatsIcons from "./SeatsIcons";
 
 export const SeatContext = createContext({});
-const server = process.env.REACT_APP_SERVER_DEV;
+const server = process.env.REACT_APP_SERVER;
 
 //=== styles
 const StyledContainer = styled("div")(({ theme }) => ({

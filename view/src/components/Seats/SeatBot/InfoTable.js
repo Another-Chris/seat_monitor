@@ -19,20 +19,12 @@ const BtnContainer = styled("div")(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));
 
-const StyledTableHead = styled(TableHead)(({ theme }) => ({}));
-
 function InfoTable() {
   const { seatInfo } = useContext(SeatInfoContext);
   const { status } = seatInfo;
   return (
     <>
       <Table>
-        <StyledTableHead>
-          <TableRow>
-            <TableCell>Type</TableCell>
-            <TableCell>Estimated Time</TableCell>
-          </TableRow>
-        </StyledTableHead>
         <TableBody>
           <TableRow>
             <TableCell>

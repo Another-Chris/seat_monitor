@@ -4,10 +4,10 @@ int outOfRangeCount = 0;
 int maxOutOfRange = 5;
 int inRangeCount = 0;
 int maxInRange = 3;
-int objectRange = 50;        //cm
+int objectRange = 50; //cm
 
 int seatOccupied = false;
-int seatId =0;
+int seatId =0; //!!!!!!!!!!!!!!!!!!!!! change this for different device
 
 int counter = 0;
 
@@ -70,7 +70,7 @@ void loop() {
   delay(500);
   counter += 1;
 
-  if (counter >= 10) { // 120 because 0.5s for 1 counter
+  if (counter >= 120) { // 120 because 0.5s for 1 counter
     Serial.println("1min, report to the server");
     oneMinDuration(seatId, counter); // tell server this seat's state has kept for 1 minute
     counter = 0;

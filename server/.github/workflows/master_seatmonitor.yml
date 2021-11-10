@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'seatmonitor'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_408231CC2E5F43B4BDFA417334A04038 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B42AD4F802DE4A62862D40E288FBBDC7 }}
           package: .

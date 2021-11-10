@@ -7,7 +7,6 @@ String devServer =  "https://iot-test-server.herokuapp.com/request";
 WiFiClientSecure client;
 HTTPClient http;
 
-
 void setupWifi() {
   const char ssid [] = "chris";
   const char password[] = "12345678";
@@ -65,6 +64,7 @@ void oneMinDuration(int seatId, int duration) {
   Serial.println(query);
 
   String url = serverName;
+  url += "/seats";
   url += "/duration";
   url += query;
 
