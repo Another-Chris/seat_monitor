@@ -1,50 +1,53 @@
 import {
-  Paper,
   Table,
   TableBody,
   TableRow,
   TableCell,
-  Typography,
   Button,
+  TableHead,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useContext } from "react";
 import { SeatInfoContext } from "../SeatDisplay";
 
+import getAverage from "../../../utils/getAverage";
+
 const BtnContainer = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "end",
-  marginTop: theme.spacing(1),
+  marginTop: theme.spacing(2),
   marginRight: theme.spacing(1),
 }));
 
+const StyledTableHead = styled(TableHead)(({ theme }) => ({}));
+
 function InfoTable() {
   const { seatInfo } = useContext(SeatInfoContext);
-  const { available, beenOccupied, seatNo } = seatInfo;
+  const { status } = seatInfo;
   return (
     <>
       <Table>
+        <StyledTableHead>
+          <TableRow>
+            <TableCell>Type</TableCell>
+            <TableCell>Estimated Time</TableCell>
+          </TableRow>
+        </StyledTableHead>
         <TableBody>
           <TableRow>
-            <TableCell>status</TableCell>
             <TableCell>
-              <Typography sx={{ color: "info" }}>
-                {available ? "available" : "occupied"}
-              </Typography>
+              average {status === "available" ? "availability" : "occupation"}
             </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>average availability</TableCell>
-            <TableCell>6.75 min</TableCell>
+            <TableCell>{getAverage(seatInfo)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>next occupation</TableCell>
-            <TableCell> {"< 1 min (estimated)"}</TableCell>
+            <TableCell> {"<1 min"}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
       <BtnContainer>
-        <Button>predict</Button>
+        <Button variant="outlined">predict</Button>
       </BtnContainer>
     </>
   );

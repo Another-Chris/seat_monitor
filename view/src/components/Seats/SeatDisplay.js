@@ -9,14 +9,20 @@ import SeatBot from "./SeatBot/SeatBot";
 
 export const SeatInfoContext = createContext({});
 
-const StyledIcon = styled(EventSeatIcon)(({ theme, available }) => ({
+const StyledIcon = styled(EventSeatIcon)(({ theme, status }) => ({
   display: "block",
   width: theme.spacing(10),
   height: theme.spacing(10),
-  fill: available ? theme.palette.primary.dark : theme.palette.grey[300],
+  fill:
+    status === "available"
+      ? theme.palette.primary.dark
+      : theme.palette.grey[300],
   cursor: "pointer",
   "&:hover": {
-    fill: available ? theme.palette.primary.light : theme.palette.grey[500],
+    fill:
+      status === "available"
+        ? theme.palette.primary.light
+        : theme.palette.grey[500],
   },
 }));
 
@@ -36,7 +42,7 @@ const ShowTime = styled(Typography)(({ theme }) => ({
 }));
 
 function SeatDisplay({ seatInfo }) {
-  const { available, beenOccupied, seatNo } = seatInfo;
+  const { status, duration, seatNo } = seatInfo;
   const [clicked, setClicked] = useState();
 
   //=== functions
@@ -45,16 +51,10 @@ function SeatDisplay({ seatInfo }) {
   return (
     <SeatInfoContext.Provider value={{ seatInfo }}>
       <Container>
-        <StyledIcon
-          onClick={onClickIcon}
-          key={seatNo}
-          available={available ? 1 : 0}
-        />
+        <StyledIcon onClick={onClickIcon} key={seatNo} status={status} />
         <Info>
-          <Typography variant="caption">
-            {available ? "Available" : "Occupied"} for
-          </Typography>
-          <ShowTime variant="h6">{formatMin(beenOccupied)}</ShowTime>
+          <Typography variant="caption">{status} for</Typography>
+          <ShowTime variant="h6">{formatMin(duration)}</ShowTime>
           <SeatBot anchorEl={clicked} close={close} />
         </Info>
       </Container>

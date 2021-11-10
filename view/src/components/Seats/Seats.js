@@ -30,7 +30,7 @@ function Seats() {
 
   //=== functions
   const getAvailableSeatNo = () =>
-    seats.filter((seat) => seat.available === true).length;
+    seats.filter((seat) => seat.status === "available").length;
 
   //=== vars
   const availableSeats = getAvailableSeatNo();

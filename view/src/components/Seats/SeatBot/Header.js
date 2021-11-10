@@ -1,4 +1,4 @@
-import { Popper, Paper, Typography, Divider } from "@mui/material";
+import { Typography, Divider, Badge } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useContext } from "react";
 import { SeatInfoContext } from "../SeatDisplay";
@@ -7,15 +7,25 @@ const Container = styled("div")(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const StyledDivider = styled(Divider)(({ theme }) => ({}));
+const Title = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+}));
 
 function Header() {
   const { seatInfo } = useContext(SeatInfoContext);
-  const { seatNo } = seatInfo;
+  const { seatNo, status } = seatInfo;
   return (
     <Container>
-      <Typography variant="h6">No.{seatNo}</Typography>
-      <StyledDivider />
+      <Title>
+        <Typography variant="h6">No.{seatNo}</Typography>
+        <Badge
+          badgeContent={status}
+          color={status === "available" ? "success" : "error"}
+        ></Badge>
+      </Title>
+
+      <Divider />
       <Typography variant="caption">very popular</Typography>
     </Container>
   );

@@ -1,4 +1,4 @@
-import { Popper, Paper, Typography, Divider } from "@mui/material";
+import { Popper, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import InfoTable from "./InfoTable";
@@ -9,7 +9,7 @@ const Overlay = styled("div")(({ theme, open }) => ({
   width: "100vw",
   height: "100vh",
   position: "fixed",
-  backgroundColor: "#343a4050",
+  backgroundColor: "#343a4080",
   left: 0,
   top: 0,
   cursor: "pointer",
