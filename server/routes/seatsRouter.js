@@ -1,7 +1,11 @@
+const {
+  onToggleSeat,
+  onChangeDuration,
+} = require("./../controllers/seatsController");
+
 const router = require("express").Router();
 
-const { onToggleSeat } = require("./../controllers/seatsController");
-
 router.post("", onToggleSeat);
+router.post("/duration", onChangeDuration);
 
 module.exports = router;

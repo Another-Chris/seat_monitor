@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState, createContext } from "react";
 
 import { SocketContext } from "../../context/socketContext";
 import { IO_EVENTS } from "./../../socket";
@@ -8,10 +8,12 @@ import Progress from "../Progress/Progress";
 import Info from "./Info";
 import SeatsIcons from "./SeatsIcons";
 
+export const SeatContext = createContext({});
+
 //=== styles
 const StyledContainer = styled("div")(({ theme }) => ({
   padding: theme.spacing(2),
-  margin: `${theme.spacing(2)} auto`,
+  margin: `${theme.spacing(10)} auto`,
   minHeight: 500,
   maxWidth: 800,
 }));
@@ -33,13 +35,17 @@ function Seats() {
   //=== vars
   const availableSeats = getAvailableSeatNo();
 
-  return socket && seats.length !== 0 ? (
-    <StyledContainer>
-      <Info availableSeats={availableSeats} />
-      <SeatsIcons seats={seats} />
-    </StyledContainer>
-  ) : (
-    <Progress />
+  return (
+    <SeatContext.Provider value={{ seats }}>
+      {socket && seats.length !== 0 ? (
+        <StyledContainer>
+          <Info availableSeats={availableSeats} />
+          <SeatsIcons />
+        </StyledContainer>
+      ) : (
+        <Progress />
+      )}
+    </SeatContext.Provider>
   );
 }
 
