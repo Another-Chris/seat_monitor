@@ -11,7 +11,6 @@ import { useContext } from "react";
 import { SeatInfoContext } from "../SeatDisplay";
 
 import getAverage from "../../../utils/getAverage";
-//test
 const BtnContainer = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "end",

@@ -49,8 +49,12 @@ void httpPost(String url, String body) {
 
 
 void changeSeatState(int seatId) {
-  String query = "?seatId=" + seatId;
-  String url = serverName + "/seats" + query;
+  String query = "?seatId=";
+  query += seatId;
+  
+  String url = serverName;
+  url += "/seats";
+  url += query;
   httpPost(url, "");
 }
 
@@ -61,7 +65,6 @@ void oneMinDuration(int seatId, int duration) {
 //  query +=  "&";
 //  query += "duration=" ;
 //  query += duration;
-  Serial.println(query);
 
   String url = serverName;
   url += "/seats";

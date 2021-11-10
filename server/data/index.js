@@ -12,28 +12,39 @@ const reInitSeat = async () => {
 
 const toggleSeats = async (seatNo) => {
   const seat = await Seat.findOne({ seatNo });
-  const startTime = seat.startTime;
-  const dataToBeCollected = {
-    startTime,
-    duration: seat.duration,
-    endTime: new Date(),
-  };
-  const pushDoc =
-    seat.status === "available"
-      ? { available: dataToBeCollected }
-      : { occupied: dataToBeCollected };
 
-  await Seat.findOneAndUpdate(
-    { seatNo },
-    {
-      $push: pushDoc,
-      $set: {
-        duration: 0,
-        status: seat.status === "available" ? "occupied" : "available",
-      },
-    },
-    { new: true }
-  );
+  if (seat.duration > 0) {
+    const startTime = seat.startTime;
+    const dataToBeCollected = {
+      startTime,
+      duration: seat.duration,
+      endTime: new Date(),
+    };
+    const pushDoc =
+      seat.status === "available"
+        ? { available: dataToBeCollected }
+        : { occupied: dataToBeCollected };
+
+    await Seat.findOneAndUpdate(
+      { seatNo },
+      {
+        $push: pushDoc,
+        $set: {
+          duration: 0,
+          status: seat.status === "available" ? "occupied" : "available",
+        },
+      }
+    );
+  } else {
+    await Seat.findOneAndUpdate(
+      { seatNo },
+      {
+        $set: {
+          status: seat.status === "available" ? "occupied" : "available",
+        },
+      }
+    );
+  }
 
   const seats = await Seat.find({});
 

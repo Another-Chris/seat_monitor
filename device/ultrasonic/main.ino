@@ -1,5 +1,5 @@
 // ===================== variables =====================
-int prevState = 0;
+int prevState = 1;
 int outOfRangeCount = 0;
 int maxOutOfRange = 5;
 int inRangeCount = 0;
