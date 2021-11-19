@@ -1,22 +1,8 @@
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Button,
-  TableHead,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Table, TableBody, TableRow, TableCell } from "@mui/material";
 import { useContext } from "react";
 import { SeatInfoContext } from "../SeatDisplay";
 
 import getAverage from "../../../utils/getAverage";
-const BtnContainer = styled("div")(({ theme }) => ({
-  display: "flex",
-  justifyContent: "end",
-  marginTop: theme.spacing(2),
-  marginRight: theme.spacing(1),
-}));
 
 function InfoTable() {
   const { seatInfo } = useContext(SeatInfoContext);
@@ -37,9 +23,6 @@ function InfoTable() {
           </TableRow>
         </TableBody>
       </Table>
-      <BtnContainer>
-        <Button variant="outlined">predict</Button>
-      </BtnContainer>
     </>
   );
 }

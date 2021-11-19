@@ -7,7 +7,7 @@ int maxInRange = 3;
 int objectRange = 50; //cm
 
 int seatOccupied = false;
-int seatId =0; //!!!!!!!!!!!!!!!!!!!!! change this for different device
+int seatId =1; //!!!!!!!!!!!!!!!!!!!!! change this for different device
 
 int counter = 0;
 

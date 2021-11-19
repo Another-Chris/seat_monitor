@@ -61,6 +61,7 @@ void changeSeatState(int seatId) {
 void oneMinDuration(int seatId, int duration) {
   //   send post to server
   String query = "?seatId=";
+  Serial.println(seatId);
   query += seatId;
 //  query +=  "&";
 //  query += "duration=" ;

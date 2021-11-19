@@ -7,6 +7,7 @@ import { IO_EVENTS } from "./../../socket";
 import Progress from "../Progress/Progress";
 import Info from "./Info";
 import SeatsIcons from "./SeatsIcons";
+import Predictor from "./Predictor/Predictor";
 
 export const SeatContext = createContext({});
 const server = process.env.REACT_APP_SERVER;

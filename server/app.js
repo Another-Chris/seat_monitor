@@ -7,6 +7,7 @@ dotenv.config({ path: path.join(__dirname, "/", ".env") });
 const mongoose = require("mongoose");
 const { initSocket } = require("./socket");
 const seatRouter = require("./routes/seatsRouter");
+const predictRouter = require("./routes/predictRouter")
 
 const dbUri = process.env.DATABASE_URI;
 const PORT = process.env.PORT || 8080;
@@ -17,6 +18,8 @@ const app = express();
 app.use(express.static(path.resolve(__dirname, "build")));
 app.use(cors());
 app.use("/seats", seatRouter);
+app.use("/predict", predictRouter)
+
 
 const server = http.createServer(app);
 

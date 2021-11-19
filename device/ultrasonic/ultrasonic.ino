@@ -1,4 +1,4 @@
-const int trigger = 12; //D6
+const int trigger = 15; //D8
 const int echo = 13;   //D7
 
 void setUpSonic() {
