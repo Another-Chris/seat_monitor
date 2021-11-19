@@ -9,22 +9,29 @@ import SeatBot from "./SeatBot/SeatBot";
 
 export const SeatInfoContext = createContext({});
 
-const StyledIcon = styled(EventSeatIcon)(({ theme, status }) => ({
-  display: "block",
-  width: theme.spacing(10),
-  height: theme.spacing(10),
-  fill:
-    status === "available"
-      ? theme.palette.primary.dark
-      : theme.palette.grey[300],
-  cursor: "pointer",
-  "&:hover": {
-    fill:
-      status === "available"
-        ? theme.palette.primary.light
-        : theme.palette.grey[500],
-  },
-}));
+const StyledIcon = styled(EventSeatIcon)(({ theme, status }) => {
+  let seatColor, seatColorHover;
+  if (status === "available") {
+    seatColor = theme.palette.primary.dark;
+    seatColorHover = theme.palette.primary.light;
+  } else if (status === "occupied") {
+    seatColor = theme.palette.grey[300];
+    seatColorHover = theme.palette.grey[500];
+  } else if (status === "suspicious") {
+    seatColor = theme.palette.warning.main;
+    seatColorHover = theme.palette.warning.light;
+  }
+  return {
+    display: "block",
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+    fill: seatColor,
+    cursor: "pointer",
+    "&:hover": {
+      fill: seatColorHover,
+    },
+  };
+});
 
 const Info = styled("div")(({ theme }) => ({
   display: "flex",

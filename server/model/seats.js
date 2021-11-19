@@ -2,19 +2,8 @@ const mongoose = require("mongoose");
 
 const SeatsSchema = mongoose.Schema({
   seatNo: Number,
-  available: [
-    {
-      startTime: Date,
-      duration: Number,
-      endTime: Date,
-    },
-  ],
-  occupied: [
-    {
-      startTime: Date,
-      duration: Number,
-      endTime: Date,
-    },
+  availability: [
+    { startTime: Date, endTime: Date, statusCode: Number, Duration: Number },
   ],
   status: String,
   duration: Number,

@@ -8,6 +8,9 @@ export default function getAverage(seatInfo) {
   const arr = getArr(seatInfo);
 
   if (arr.length === 0) {
+    if (seatInfo.duration > 0) {
+      return seatInfo.duration + " min";
+    }
     return "<1 min";
   }
 

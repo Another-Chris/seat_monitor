@@ -48,9 +48,11 @@ void httpPost(String url, String body) {
 }
 
 
-void changeSeatState(int seatId) {
+void changeSeatState(int seatId, String seatStatus) {
   String query = "?seatId=";
   query += seatId;
+  query += "?status=";
+  query += seatStatus;
   
   String url = serverName;
   url += "/seats";

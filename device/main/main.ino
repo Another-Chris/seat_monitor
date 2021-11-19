@@ -6,8 +6,15 @@ int inRangeCount = 0;
 int maxInRange = 3;
 int objectRange = 50; //cm
 
+int objectOnDesktop = 0;
+int objectOnSeat = 0;
+
 int seatOccupied = false;
-int seatId =1; //!!!!!!!!!!!!!!!!!!!!! change this for different device
+int seatId =1;                              // Seat Id
+
+const String seatAvailable = "available";
+const String seatOccupied = "occupied";
+const String seatSuspicious = "suspicious";
 
 int counter = 0;
 
@@ -29,9 +36,10 @@ long calcDistance(long duration) {
     if (seatOccupied) {
       outOfRangeCount ++;
       if (outOfRangeCount >= maxOutOfRange) {
-        Serial.println("no object in front, free the seat");
+        Serial.println("[-] No object on desk anymore");
+        objectOnDesktop = 0
         seatOccupied = false;
-        changeSeatState(seatId);
+        changeSeatState(seatId, seatAvailable);
         outOfRangeCount = 0;
         counter = 0;
       }
@@ -67,11 +75,11 @@ void loop() {
   duration = pulseIn(echo, HIGH);
   long distance = calcDistance(duration);
   Serial.println(distance);
-  delay(500);
+  delay(1000);
   counter += 1;
 
-  if (counter >= 120) { // 120 because 0.5s for 1 counter
-    Serial.println("1min, report to the server");
+  if (counter >= 60) {
+    Serial.println("[+] 1min reached. The current duration extends.");
     oneMinDuration(seatId, counter); // tell server this seat's state has kept for 1 minute
     counter = 0;
   }

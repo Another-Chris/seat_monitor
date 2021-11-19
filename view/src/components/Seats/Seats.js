@@ -23,7 +23,6 @@ const StyledContainer = styled("div")(({ theme }) => ({
 function Seats() {
   const { socket } = useContext(SocketContext);
   const [seats, setSeats] = useState([]);
-  console.log(seats);
 
   useEffect(() => {
     async function getSeats() {

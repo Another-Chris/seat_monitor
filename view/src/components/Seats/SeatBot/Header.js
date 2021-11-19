@@ -15,14 +15,20 @@ const Title = styled("div")(({ theme }) => ({
 function Header() {
   const { seatInfo } = useContext(SeatInfoContext);
   const { seatNo, status } = seatInfo;
+
+  let badgeColor;
+  if (status === "available") {
+    badgeColor = "success";
+  } else if (status === "occupied") {
+    badgeColor = "error";
+  } else if (status === "suspicious") {
+    badgeColor = "warning";
+  }
   return (
     <Container>
       <Title>
         <Typography variant="h6">No.{seatNo}</Typography>
-        <Badge
-          badgeContent={status}
-          color={status === "available" ? "success" : "error"}
-        ></Badge>
+        <Badge badgeContent={status} color={badgeColor}></Badge>
       </Title>
 
       <Divider />

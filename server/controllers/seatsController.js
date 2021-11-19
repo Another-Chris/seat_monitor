@@ -8,8 +8,9 @@ const { boardcastSeatInfo } = require("./../socket");
 
 const onToggleSeat = async (req, res, next) => {
   const seatId = Number(req.query.seatId);
+  const status = req.query.status;
 
-  const seatInfo = await toggleSeats(seatId);
+  const seatInfo = await toggleSeats(seatId, status);
   boardcastSeatInfo(seatInfo);
   res.json(seatInfo);
 };
