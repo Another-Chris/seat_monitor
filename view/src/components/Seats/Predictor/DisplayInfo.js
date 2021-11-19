@@ -1,4 +1,4 @@
-import { CircularProgress, Divider, Paper, Typography } from "@mui/material";
+import { CircularProgress, Paper, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useContext } from "react";
 import { PredictorContext } from "./Predictor";
@@ -25,8 +25,7 @@ const InfoText = styled(Typography)(({ theme, status }) => ({
       ? theme.palette.success.main
       : theme.palette.error.main,
   textTransform: "uppercase",
-  margin: `${theme.spacing(1)} 0`
-
+  margin: `${theme.spacing(1)} 0`,
 }));
 
 function DisplayInfo() {
@@ -43,7 +42,9 @@ function DisplayInfo() {
           <InfoText status={predicted.status} variant="h5">
             {predicted.status}
           </InfoText>
-          <Typography>Availability: {Number(predicted.confidence).toFixed(2)} %</Typography>
+          <Typography>
+            Availability: {Number(predicted.confidence).toFixed(2)} %
+          </Typography>
         </div>
       )}
     </StyledContainer>
