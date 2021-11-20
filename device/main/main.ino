@@ -1,80 +1,132 @@
 // ===================== variables =====================
-int prevState = 1;
+// Seat Id
+int seatId = 1;
+
+// Serial port
+int baud = 115200;
+
+// pinMap (for wemos)
+const int trigger = 15;  //D8
+const int echo = 13;    //D7
+const int touch = 12;   //D6
+
+// variables for ultrasonic
+int prevDistance = 1;
 int outOfRangeCount = 0;
 int maxOutOfRange = 5;
 int inRangeCount = 0;
 int maxInRange = 3;
-int objectRange = 50; //cm
+int objectRange = 50;
 
-int objectOnDesktop = 0;
+// sensor state
+int objectOnDesk = 0;
 int objectOnSeat = 0;
-
-int seatOccupied = false;
-int seatId =1;                              // Seat Id
+String prevState = "available";
 
 const String seatAvailable = "available";
 const String seatOccupied = "occupied";
 const String seatSuspicious = "suspicious";
 
+// count for the status duration
 int counter = 0;
 
 // ===================== utils  =====================
 
+void printState(long distance, int touchState, String currState) {
+  String content = "distance: ";
+  content += distance;
+  content += "    ";
+  content += "touch: ";
+  content += touchState;
+  content += "\n";
+  content += "status: ";
+  content += currState;
+  Serial.print(content);
+}
+
+String verifyCurrState() {
+  String currState;
+  if (objectOnDesk && objectOnSeat) {
+    currState = seatOccupied;
+  } else if (!objectOnDesk && objectOnSeat) {
+    currState = seatOccupied;
+  } else if (objectOnDesk && !objectOnSeat) {
+    currState = seatSuspicious;
+  } else {
+    currState = seatAvailable;
+  }
+  return currState;
+}
+
 bool outOfRange(long distance) {
   if (distance >= objectRange) {
-    if (prevState >= objectRange) {
+    if (prevDistance >= objectRange) {
       return true;
     }
   }
   return false;
 }
 
-long calcDistance(long duration) {
-  long distance = (duration / 2) / 29.1;  // 1/29.1 is the sound speed
+void resetRangeCounts() {
+  outOfRangeCount = 0;
+  inRangeCount = 0;
+}
 
+long verifyDistance(long distance) {
+
+  // out of range: no things detected
   if (outOfRange(distance)) {
-    if (seatOccupied) {
-      outOfRangeCount ++;
-      if (outOfRangeCount >= maxOutOfRange) {
-        Serial.println("[-] No object on desk anymore");
-        objectOnDesktop = 0
-        seatOccupied = false;
-        changeSeatState(seatId, seatAvailable);
-        outOfRangeCount = 0;
-        counter = 0;
-      }
-    }
-  } else {
-    if (!seatOccupied) {
-      inRangeCount ++;
-      if (inRangeCount >= maxInRange) {
-        Serial.println("object detected, occupy seat");
-        changeSeatState(seatId);
-        seatOccupied = true;
-        inRangeCount = 0;
-        counter = 0;
-      }
-    } else {
-      outOfRangeCount = 0;
+    outOfRangeCount ++;
+    if (outOfRangeCount >= maxOutOfRange) {
+      Serial.println("[-] No object on desk");
+      objectOnDesk = 0;
+      resetRangeCounts();
     }
   }
-  prevState = distance;
+  // in range: detect object
+  else {
+    inRangeCount ++;
+    if (inRangeCount >= maxInRange) {
+      Serial.println("[+] Detect object on desk");
+      objectOnDesk = 1;
+      resetRangeCounts();
+    }
+  }
+  prevDistance = distance;
   return distance;
 }
 
+// ===================== start =====================
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(baud);
   setUpSonic();
   setupWifi();
+  setupTouch();
   Serial.println("ready to go.");
 }
 
 void loop() {
-  long duration;  // time the trigger being high
-  sendPulse();
-  duration = pulseIn(echo, HIGH);
-  long distance = calcDistance(duration);
-  Serial.println(distance);
+  // ultrasonic
+  long distance = getDistance();
+  objectOnDesk = verifyDistance(distance);
+
+  // touch
+  int touchState = getTouchState();
+  objectOnSeat = touchState;
+
+  // change status
+  String currState = verifyCurrState();
+
+  //print status
+  printState(distance, touchState, currState);
+
+  // http
+  if (currState != prevState) {
+    Serial.println("[+] change seat status");
+    changeSeatState(seatId, currState);
+    prevState = currState;
+  }
+
   delay(1000);
   counter += 1;
 

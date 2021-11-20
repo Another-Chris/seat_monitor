@@ -12,14 +12,17 @@ const reInitSeat = async () => {
 
 const toggleSeats = async (seatNo, status) => {
   const seat = await Seat.findOne({ seatNo });
+  if (seat.status === status) {
+    return;
+  }
 
   // calculate seat availability
   let statusCode;
-  if (status === "available") {
+  if (seat.status === "available") {
     statusCode = 1;
-  } else if (status === "occupied") {
+  } else if (seat.status === "occupied") {
     statusCode = 0;
-  } else if (status === "suspicious") {
+  } else if (seat.status === "suspicious") {
     statusCode = -1;
   }
 
@@ -37,7 +40,7 @@ const toggleSeats = async (seatNo, status) => {
     await Seat.findOneAndUpdate(
       { seatNo },
       {
-        $push: pushDoc,
+        $push: { availability: pushDoc },
         $set: {
           duration: 0,
           status,

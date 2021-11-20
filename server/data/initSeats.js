@@ -5,8 +5,6 @@ module.exports = function initSeats() {
 
   return [...Array(totalSeats).keys()].map((no) => ({
     seatNo: no,
-    available: [],
-    occupied: [],
     status: "available",
     duration: 0,
     startTime: currDate,

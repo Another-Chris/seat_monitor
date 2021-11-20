@@ -11,6 +11,9 @@ const onToggleSeat = async (req, res, next) => {
   const status = req.query.status;
 
   const seatInfo = await toggleSeats(seatId, status);
+  if (!seatInfo) {
+    return res.json("invalid status update");
+  }
   boardcastSeatInfo(seatInfo);
   res.json(seatInfo);
 };
