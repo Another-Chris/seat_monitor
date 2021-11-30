@@ -1,6 +1,6 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
-#include <WiFiClient.h>
+#include <ESP8266WiFi.h>          // wifi connection
+#include <ESP8266HTTPClient.h>    // http request
+#include <WiFiClient.h>           // client for http
 
 String serverName = "https://seatmonitor.azurewebsites.net";
 String devServer =  "https://iot-test-server.herokuapp.com/request";
@@ -51,7 +51,7 @@ void httpPost(String url, String body) {
 void changeSeatState(int seatId, String seatStatus) {
   String query = "?seatId=";
   query += seatId;
-  query += "?status=";
+  query += "&status=";
   query += seatStatus;
   
   String url = serverName;

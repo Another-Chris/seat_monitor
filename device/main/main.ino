@@ -1,6 +1,6 @@
 // ===================== variables =====================
 // Seat Id
-int seatId = 1;
+int seatId = 0;
 
 // Serial port
 int baud = 115200;
@@ -13,9 +13,9 @@ const int touch = 12;   //D6
 // variables for ultrasonic
 int prevDistance = 1;
 int outOfRangeCount = 0;
-int maxOutOfRange = 5;
+int maxOutOfRange = 2;
 int inRangeCount = 0;
-int maxInRange = 3;
+int maxInRange = 2;
 int objectRange = 50;
 
 // sensor state
@@ -41,6 +41,7 @@ void printState(long distance, int touchState, String currState) {
   content += "\n";
   content += "status: ";
   content += currState;
+  content += "\n";
   Serial.print(content);
 }
 
@@ -93,7 +94,7 @@ long verifyDistance(long distance) {
     }
   }
   prevDistance = distance;
-  return distance;
+  return objectOnDesk;
 }
 
 // ===================== start =====================
@@ -113,6 +114,7 @@ void loop() {
   // touch
   int touchState = getTouchState();
   objectOnSeat = touchState;
+  
 
   // change status
   String currState = verifyCurrState();
