@@ -1,29 +1,28 @@
 #include<LoRa.h>
 
 //=== pins
-const int trigger = 30;
-const int echo = 31;
-const int touch = 32;
+const int trigger = 3;
+const int echo = 4;
+const int touch = 5;
 
 //=== object distance
 const int outRange = 100;
 
 //============================= functions
-String getSeatStatus() {
+int getSeatStatus() {
   long distance = getDistance();
   int isTouching = getTouchState() == 1;
-  Serial.println(distance);
-  if ((distance < outRange) && isTouching)  return 0;
-  else if ((distance < outRange) && !isTouching) return -1;
-  else return 1;
+  if (isTouching) return 0;
+  else{
+        if (distance < outRange) return 2;
+        else return 1;
+    }
 }
 
 void onReceive() {
   String message =  parsePacket();
   if (message == "GET_STATUS") {
-    String seatStatus = getSeatStatus();
-
-    Serial.println("[+] receive command; seat status: " + seatStatus);
+    int seatStatus = getSeatStatus();
     sendPacket(seatStatus);
   } else return;
 }

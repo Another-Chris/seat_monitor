@@ -11,7 +11,7 @@ void setUpLoRa() {
   Serial.println("LoRa ready");
 }
 
-void sendPacket(String message) {
+void sendPacket(int message) {
   LoRa.beginPacket();
   LoRa.print(message);
   LoRa.endPacket();

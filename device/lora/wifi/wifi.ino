@@ -54,6 +54,11 @@ void httpPost(String url, String body) {
     Serial.println("WiFi disconnected.");
   }
 }
+String cvtMsg(char message) {
+  if (message == '0') return "occupied";
+  else if (message == '1') return "available";
+  else return "suspicious";
+}
 
 
 void setup() {
@@ -64,19 +69,13 @@ void setup() {
 void loop() {
   while (Serial.available() > 0) {
     char reading = Serial.read();
-    if (reading != '\n') {
-      message[message_pos] = reading;
-      message_pos ++;
-    } else {
-      message[message_pos] = '\0';
-      int number = atoi(message);
 
-      String url = serverName;
-      url += "?status=";
-      url += 
-      httpPost(url, "");
-      
-      message_pos = 0;
-    }
+    String url = serverName;
+    url += "/seats";
+    url += "?status=";
+    url += cvtMsg(reading);
+    url += "&seatId=";
+    url += "0";
+    httpPost(url, "");
   }
 }
