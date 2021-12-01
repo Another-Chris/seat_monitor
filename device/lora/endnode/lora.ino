@@ -8,6 +8,7 @@ void setUpLoRa() {
     Serial.print(".");
     delay(500);
   }
+  Serial.println("LoRa ready");
 }
 
 void sendPacket(String message) {

@@ -13,15 +13,16 @@ String getSeatStatus() {
   long distance = getDistance();
   int isTouching = getTouchState() == 1;
   Serial.println(distance);
-  if ((distance < outRange) && isTouching)  return "occupied";
-  else if ((distance < outRange) && !isTouching) return "suspicious";
-  else return "available";
+  if ((distance < outRange) && isTouching)  return 0;
+  else if ((distance < outRange) && !isTouching) return -1;
+  else return 1;
 }
 
-void onReceive(int packetSize) {
+void onReceive() {
   String message =  parsePacket();
-  if (message == "GET_STAUS") {
+  if (message == "GET_STATUS") {
     String seatStatus = getSeatStatus();
+
     Serial.println("[+] receive command; seat status: " + seatStatus);
     sendPacket(seatStatus);
   } else return;
@@ -37,5 +38,9 @@ void setup() {
 
 
 void loop() {
-  LoRa.onReceive(onReceive);
+  //  LoRa.onReceive(onReceive);
+  int packetSize = LoRa.parsePacket();
+  if (packetSize != 0) {
+    onReceive();
+  }
 }
