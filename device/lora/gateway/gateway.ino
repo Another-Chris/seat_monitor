@@ -3,12 +3,14 @@
 //============================= start
 void setup() {
   Serial.begin(9600);
+  Serial1.begin(115200);
   setUpLoRa();
 }
 
 String cvtMsg(int message){
-    if (message == 0) return "occupied";
-    else if (message == 1) return "available";
+    char msg = char(message);
+    if (msg == '0') return "occupied";
+    else if (msg == '1') return "available";
     else return "suspicious";
   }
 
@@ -24,6 +26,6 @@ void loop() {
   if (packetSize != 0) {
     int message = LoRa.read();
     Serial.println("[+] receive seat status: " + cvtMsg(message));
-    Serial.write(message);
+    Serial1.write(message);
   }
 }
